@@ -1,6 +1,6 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
-from google.cloud.firestore_v1.base_query import FieldFilter
+
 # Initialize Firebase
 cred = credentials.Certificate("proyecto-ces-eb82b-firebase-adminsdk-y17i7-d74365d76f.json")
 firebase_admin.initialize_app(cred)
@@ -36,13 +36,8 @@ def delete_person(id):
 
 def get_person_by_semester(semester):
     semester = int(semester)
-    docs = (
-        db.collection("persons")
-        .where(filter=FieldFilter("semester", "==",semester))
-        .stream()
-    )
+    docs = db.collection('persons').where('semester', '==', semester).stream()
     persons = []
     for doc in docs:
-        print(doc.to_dict()['name'])
         persons.append(doc.to_dict())
     return persons
